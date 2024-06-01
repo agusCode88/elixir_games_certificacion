@@ -41,7 +41,6 @@ android {
 
 dependencies {
 
-    val lifecycle_version = "2.8.0"
     //MVVM
     // ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -51,7 +50,10 @@ dependencies {
     implementation (libs.retrofit)
     //Conversor
     implementation (libs.gson)
-    implementation (libs.converter.gson)
+
+    implementation(libs.converter.gson.v2110)
+
+    implementation (libs.squareup.picasso)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
