@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.elixirgamesapp.data.local.entities.VideoGame
 import com.example.elixirgamesapp.data.response.VideoGameResponse
 import com.example.elixirgamesapp.databinding.GameItemBinding
 import com.squareup.picasso.Picasso
@@ -19,6 +20,7 @@ class VideoGameAdapter: RecyclerView.Adapter<VideoGameAdapter.ViewHolder>() {
             field = value
             this.notifyDataSetChanged()
         }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = GameItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)

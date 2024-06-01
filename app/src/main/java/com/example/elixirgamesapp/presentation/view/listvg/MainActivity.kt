@@ -3,10 +3,10 @@ package com.example.elixirgamesapp.presentation.view.listvg
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.elixirgamesapp.data.local.database.AppDataBase
 import com.example.elixirgamesapp.data.network.api.VideoGameService
 import com.example.elixirgamesapp.data.network.retrofit.RetrofitHelper
 import com.example.elixirgamesapp.data.repository.VideoGameImpl
@@ -27,11 +27,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val apiService = RetrofitHelper.getRetrofit().create(VideoGameService::class.java)
-        val repository = VideoGameImpl(apiService)
+        val database = AppDataBase.getDatabase(application)
+        val repository = VideoGameImpl(apiService, database.videoGameDao())
         val usecase = VideoGameUseCase(repository)
 
         val viewModelFactory = ViewModelFactory(usecase)
         val viewModel = ViewModelProvider(this,viewModelFactory)[VideoGameViewModel::class.java]
+
+        viewModel.getAllVideoGamesFromServer()
 
         val adapterVideoGame = VideoGameAdapter()
         binding.vgRecycler.adapter = adapterVideoGame

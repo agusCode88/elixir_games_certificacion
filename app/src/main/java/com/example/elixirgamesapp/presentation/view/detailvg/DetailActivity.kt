@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.elixirgamesapp.R
+import com.example.elixirgamesapp.data.local.database.AppDataBase
 import com.example.elixirgamesapp.data.network.api.VideoGameService
 import com.example.elixirgamesapp.data.network.retrofit.RetrofitHelper
 import com.example.elixirgamesapp.data.repository.VideoGameImpl
@@ -33,7 +34,8 @@ class DetailActivity : AppCompatActivity() {
         }
 
         val apiService = RetrofitHelper.getRetrofit().create(VideoGameService::class.java)
-        val repository = VideoGameImpl(apiService)
+        val database = AppDataBase.getDatabase(application)
+        val repository = VideoGameImpl(apiService,database.videoGameDao())
         val useCase = VideoGameUseCase(repository)
         val viewModelFactory = ViewModelDetailFactory(useCase)
         val viewModel = ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java]

@@ -1,7 +1,11 @@
 package com.example.elixirgamesapp.data.local.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 data class VideoGameDetail(
-    val idDetail: Long,
+    @PrimaryKey
+    val id: Long,
     val playtime: Long,
     val platforms: String,
     val genres: String,

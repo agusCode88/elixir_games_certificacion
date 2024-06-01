@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -40,6 +41,12 @@ android {
 }
 
 dependencies {
+
+    val room_version = "2.6.1"
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     //MVVM
     // ViewModel
