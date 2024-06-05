@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -50,10 +51,14 @@ dependencies {
     implementation (libs.retrofit)
     //Conversor
     implementation (libs.gson)
-
     implementation(libs.converter.gson.v2110)
-
+    // Picasso
     implementation (libs.squareup.picasso)
+    //Room bases de datos
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

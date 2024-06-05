@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.elixirgamesapp.data.local.database.AppDataBase
 import com.example.elixirgamesapp.data.network.api.VideoGameService
 import com.example.elixirgamesapp.data.network.retrofit.RetrofitHelper
 import com.example.elixirgamesapp.data.repository.VideoGameImpl
@@ -27,11 +28,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val apiService = RetrofitHelper.getRetrofit().create(VideoGameService::class.java)
-        val repository = VideoGameImpl(apiService)
-        val usecase = VideoGameUseCase(repository)
+        val dataBase = AppDataBase.getDatabase(application)
 
-        val viewModelFactory = ViewModelFactory(usecase)
+        val repository = VideoGameImpl(apiService, dataBase.videoGameDAO())
+        val useCase = VideoGameUseCase(repository)
+
+        val viewModelFactory = ViewModelFactory(useCase)
         val viewModel = ViewModelProvider(this,viewModelFactory)[VideoGameViewModel::class.java]
+
+        viewModel.getAllVideoGamesFromServer()
 
         val adapterVideoGame = VideoGameAdapter()
         binding.vgRecycler.adapter = adapterVideoGame
@@ -44,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         adapterVideoGame.onItemClickListener = { videoGame ->
             val idVideoGame = videoGame.id
-            val nombreVideoGame = videoGame.name
             //TODO Hacer que esto vaya a mi segunda actividd o fragmento
             goToVideoGameDetailPage(idVideoGame)
 

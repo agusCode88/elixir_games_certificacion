@@ -3,4 +3,5 @@
     <string name="take_game">Quiero este juego</string>
     <string name="metacritic">Valoración de la crítica</string>
     <string name="price">Precio Normal</string>
+    <string name="name_videogame">Nombre juego</string>
 </resources>

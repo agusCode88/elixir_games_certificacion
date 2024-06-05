@@ -8,7 +8,6 @@ import retrofit2.http.Path
 interface VideoGameService {
     @GET("games")
     suspend fun getAllVideoGames(): MutableList<VideoGameResponse>
-
     @GET("gameDetails/{id}")
     suspend fun getVideoGameById(@Path("id") idVideoGame: Long ) : VideoGameDetailResponse
 }

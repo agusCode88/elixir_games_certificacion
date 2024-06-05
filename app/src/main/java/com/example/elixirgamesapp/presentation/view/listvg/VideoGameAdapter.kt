@@ -38,7 +38,7 @@ class VideoGameAdapter: RecyclerView.Adapter<VideoGameAdapter.ViewHolder>() {
           fun bindVideoGame(videoGame: VideoGameResponse){
               binding.imgVideoGame.setImageResource(0)
               Picasso.get()
-                  .load(videoGame.backgroundImage)
+                  .load(videoGame.background_image)
                   .centerCrop()
                   .fit()
                   .into(binding.imgVideoGame)

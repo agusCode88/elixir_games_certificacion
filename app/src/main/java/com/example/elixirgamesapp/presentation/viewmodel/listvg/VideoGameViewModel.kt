@@ -1,5 +1,6 @@
 package com.example.elixirgamesapp.presentation.viewmodel.listvg
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,10 +15,23 @@ class VideoGameViewModel(private val useCase: VideoGameUseCase): ViewModel() {
     val videoGameLV
         get() = videoGameList
 
-    init {
-        viewModelScope.launch {
-            videoGameList.value = useCase.getAllVideoGamesOnStock()
-        }
-    }
 
+    fun getAllVideoGamesFromServer(){
+       viewModelScope.launch {
+            try {
+                val response = useCase.getAllVideoGamesOnStock()
+                if( response.isNotEmpty()){
+                    useCase.saveAllVideoGamesDB(response)
+                    response.forEach { videoGame ->
+                        val detailResponse = useCase.getVideoGameByIdOnStock(videoGame.id)
+                        useCase.saveDetailVideoGameDB(detailResponse)
+                    }
+                }
+                videoGameList.value = response
+            } catch (e: Exception){
+                Log.e("MainActivity", "Not Network Connecction")
+                videoGameList.value = useCase.getAllVideoGamesDB()
+            }
+       }
+    }
 }
