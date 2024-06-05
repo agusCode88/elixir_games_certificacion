@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "videogame_details")
 data class VideoGameDetailResponse(
-    @PrimaryKey
+   @PrimaryKey
     val id: Long,
     val name: String,
     val released: String,

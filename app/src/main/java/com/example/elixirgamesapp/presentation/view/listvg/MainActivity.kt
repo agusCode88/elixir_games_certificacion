@@ -3,6 +3,7 @@ package com.example.elixirgamesapp.presentation.view.listvg
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,11 +28,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val apiService = RetrofitHelper.getRetrofit().create(VideoGameService::class.java)
-        val database = AppDataBase.getDatabase(application)
-        val repository = VideoGameImpl(apiService, database.videoGameDao())
-        val usecase = VideoGameUseCase(repository)
+        val dataBase = AppDataBase.getDatabase(application)
 
-        val viewModelFactory = ViewModelFactory(usecase)
+        val repository = VideoGameImpl(apiService, dataBase.videoGameDAO())
+        val useCase = VideoGameUseCase(repository)
+
+        val viewModelFactory = ViewModelFactory(useCase)
         val viewModel = ViewModelProvider(this,viewModelFactory)[VideoGameViewModel::class.java]
 
         viewModel.getAllVideoGamesFromServer()
@@ -47,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         adapterVideoGame.onItemClickListener = { videoGame ->
             val idVideoGame = videoGame.id
-            val nombreVideoGame = videoGame.name
             //TODO Hacer que esto vaya a mi segunda actividd o fragmento
             goToVideoGameDetailPage(idVideoGame)
 

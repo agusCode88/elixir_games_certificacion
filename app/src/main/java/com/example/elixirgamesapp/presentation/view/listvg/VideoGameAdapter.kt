@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.elixirgamesapp.data.local.entities.VideoGame
 import com.example.elixirgamesapp.data.response.VideoGameResponse
 import com.example.elixirgamesapp.databinding.GameItemBinding
 import com.squareup.picasso.Picasso
@@ -40,7 +39,7 @@ class VideoGameAdapter: RecyclerView.Adapter<VideoGameAdapter.ViewHolder>() {
           fun bindVideoGame(videoGame: VideoGameResponse){
               binding.imgVideoGame.setImageResource(0)
               Picasso.get()
-                  .load(videoGame.backgroundImage)
+                  .load(videoGame.background_image)
                   .centerCrop()
                   .fit()
                   .into(binding.imgVideoGame)

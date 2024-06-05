@@ -1,6 +1,6 @@
 package com.example.elixirgamesapp.data.repository
 
-import com.example.elixirgamesapp.data.local.daos.VideoGameDao
+import com.example.elixirgamesapp.data.local.dao.VideoGameDao
 import com.example.elixirgamesapp.data.network.api.VideoGameService
 import com.example.elixirgamesapp.data.response.VideoGameDetailResponse
 import com.example.elixirgamesapp.data.response.VideoGameResponse
@@ -10,7 +10,12 @@ import kotlinx.coroutines.withContext
 class VideoGameImpl(
     private var apiservice:VideoGameService,
     private var daoDB: VideoGameDao
-): VideoGameRepository {
+    ): VideoGameRepository {
+
+
+    /**
+     * Implementación de la API REST de videojuegos
+     */
     override suspend fun fetchVideoGames(): MutableList<VideoGameResponse> {
        return withContext(Dispatchers.IO){
              val listVideoGames = apiservice.getAllVideoGames()
@@ -25,29 +30,35 @@ class VideoGameImpl(
         }
     }
 
-    override suspend fun saveAllVideoGamesDB(videoGames: MutableList<VideoGameResponse>) {
+    /**
+     * Implementación de las consultas a la base de datos a través de un DAO
+     */
+
+    override suspend fun saveAllVideoGamesOnDB(videoGames: MutableList<VideoGameResponse>) {
         return withContext(Dispatchers.IO){
             daoDB.insertVideoGames(videoGames)
         }
     }
 
-    override suspend fun getVideoGamesDB(): MutableList<VideoGameResponse> {
+    override suspend fun getAllVideoGamesFromDB(): MutableList<VideoGameResponse> {
         return withContext(Dispatchers.IO){
-            val videoGamesBD = daoDB.getAllVideoGames()
-            videoGamesBD
+            val response = daoDB.getAllVideoGames()
+            response
+        }
+
+    }
+
+    override suspend fun saveDetailVideoGameOnDB(detailVideoGameDetailResponse: VideoGameDetailResponse) {
+        return withContext(Dispatchers.IO){
+            daoDB.insertVideoGameDetail(detailVideoGameDetailResponse)
         }
     }
 
-    override suspend fun saveDetailVideoGameDB(videoGameDetails: VideoGameDetailResponse) {
+    override suspend fun getDetailVideoGameFromDB(idVideoGame: Long): VideoGameDetailResponse {
         return withContext(Dispatchers.IO){
-           daoDB.insertVideoGameDetail(videoGameDetails)
+            val response = daoDB.getVideoGameDetailById(idVideoGame)
+            response
         }
-    }
 
-    override suspend fun getDetailVideoGameDB(idVideoGame: Long): VideoGameDetailResponse {
-        return withContext(Dispatchers.IO){
-            val videoGameDetailBD = daoDB.getVideoGameDetailById(idVideoGame)
-            videoGameDetailBD
-        }
     }
 }

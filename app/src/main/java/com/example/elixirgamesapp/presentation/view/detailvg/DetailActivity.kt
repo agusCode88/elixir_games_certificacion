@@ -1,7 +1,9 @@
 package com.example.elixirgamesapp.presentation.view.detailvg
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -34,8 +36,8 @@ class DetailActivity : AppCompatActivity() {
         }
 
         val apiService = RetrofitHelper.getRetrofit().create(VideoGameService::class.java)
-        val database = AppDataBase.getDatabase(application)
-        val repository = VideoGameImpl(apiService,database.videoGameDao())
+        val dataBase = AppDataBase.getDatabase(application)
+        val repository = VideoGameImpl(apiService,dataBase.videoGameDAO())
         val useCase = VideoGameUseCase(repository)
         val viewModelFactory = ViewModelDetailFactory(useCase)
         val viewModel = ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java]
@@ -57,9 +59,32 @@ class DetailActivity : AppCompatActivity() {
                     .get()
                     .load(backgroundImage)
                     .into(bindingDetail.imgVideoGame)
-            }
 
+                bindingDetail.btnSendEmail.setOnClickListener {
+                    sendEmailWithVideoGame(name, id)
+                }
+            }
         }
+    }
+    private fun sendEmailWithVideoGame(nameVideoGame: String, idVideoGame:Long){
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "message/rfc822"
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("agus.romero.salazar@gmail.com"))
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Quiero un VideoJuego")
+        intent.putExtra(Intent.EXTRA_TEXT,"Hola\n" +
+                "Vi el juego ${ nameVideoGame } de código ${ idVideoGame } y me gustaría que me contactaran a este correo o al\n" +
+                "siguiente número _________\n" +
+                "Quedo atento.")
+
+        if(intent.resolveActivity(packageManager) != null ){
+            // Este es el Intent Implícito
+            startActivity(Intent.createChooser(intent, "Enviar por correo"))
+        } else
+            Toast.makeText(
+                this,
+                "Tienes que tener instalada una aplicación de correo",
+                Toast.LENGTH_LONG
+            ).show()
 
     }
 }

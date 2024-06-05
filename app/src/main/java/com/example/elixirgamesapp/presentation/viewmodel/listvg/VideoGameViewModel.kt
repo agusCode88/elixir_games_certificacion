@@ -8,7 +8,7 @@ import com.example.elixirgamesapp.data.response.VideoGameResponse
 import com.example.elixirgamesapp.domain.VideoGameUseCase
 import kotlinx.coroutines.launch
 
-class VideoGameViewModel(private val useCase: VideoGameUseCase) : ViewModel() {
+class VideoGameViewModel(private val useCase: VideoGameUseCase): ViewModel() {
 
     private var videoGameList = MutableLiveData<MutableList<VideoGameResponse>>()
 
@@ -16,25 +16,22 @@ class VideoGameViewModel(private val useCase: VideoGameUseCase) : ViewModel() {
         get() = videoGameList
 
 
-    fun getAllVideoGamesFromServer() {
-
-        viewModelScope.launch {
+    fun getAllVideoGamesFromServer(){
+       viewModelScope.launch {
             try {
                 val response = useCase.getAllVideoGamesOnStock()
-                if (response.isNotEmpty()) {
-                    useCase.saveAllVideoGamesOnStockDB(response)
+                if( response.isNotEmpty()){
+                    useCase.saveAllVideoGamesDB(response)
                     response.forEach { videoGame ->
-                        val detail = useCase.getVideoGameByIdOnStock(videoGame.id)
-                        useCase.saveDetailVideoGameOnDB(detail)
+                        val detailResponse = useCase.getVideoGameByIdOnStock(videoGame.id)
+                        useCase.saveDetailVideoGameDB(detailResponse)
                     }
                 }
                 videoGameList.value = response
-            } catch (e: Exception) {
-                Log.e("MainViewMODEL", "Not network connection")
-                videoGameList.value = useCase.getAllVideoGamesFromDB()
-
+            } catch (e: Exception){
+                Log.e("MainActivity", "Not Network Connecction")
+                videoGameList.value = useCase.getAllVideoGamesDB()
             }
-        }
+       }
     }
-
 }

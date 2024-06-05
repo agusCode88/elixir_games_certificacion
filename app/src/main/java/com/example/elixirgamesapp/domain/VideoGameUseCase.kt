@@ -1,9 +1,9 @@
 package com.example.elixirgamesapp.domain
 
 import com.example.elixirgamesapp.data.repository.VideoGameImpl
-import com.example.elixirgamesapp.data.repository.VideoGameRepository
 import com.example.elixirgamesapp.data.response.VideoGameDetailResponse
 import com.example.elixirgamesapp.data.response.VideoGameResponse
+
 
 class VideoGameUseCase(private val repository: VideoGameImpl) {
     suspend fun getAllVideoGamesOnStock(): MutableList<VideoGameResponse>{
@@ -13,19 +13,21 @@ class VideoGameUseCase(private val repository: VideoGameImpl) {
         return repository.fetchVideoGameById(idVideogame)
     }
 
-    suspend fun saveAllVideoGamesOnStockDB(videoGames: MutableList<VideoGameResponse>){
-        return repository.saveAllVideoGamesDB(videoGames)
+
+    suspend fun saveAllVideoGamesDB(videoGames: MutableList<VideoGameResponse>) {
+            return repository.saveAllVideoGamesOnDB(videoGames)
     }
 
-    suspend fun getAllVideoGamesFromDB(): MutableList<VideoGameResponse>{
-        return repository.getVideoGamesDB()
+    suspend fun getAllVideoGamesDB(): MutableList<VideoGameResponse>{
+        return repository.getAllVideoGamesFromDB()
     }
 
-    suspend fun saveDetailVideoGameOnDB(videoGameDetail: VideoGameDetailResponse){
-        return repository.saveDetailVideoGameDB(videoGameDetail)
+    suspend fun saveDetailVideoGameDB(videoGameDetail: VideoGameDetailResponse){
+        return repository.saveDetailVideoGameOnDB(videoGameDetail)
     }
 
-    suspend fun getDetailVideoGameFromDB(idVideoGame: Long): VideoGameDetailResponse{
-        return repository.getDetailVideoGameDB(idVideoGame)
+    suspend fun getDetailVideoGameDB(idVideoGame: Long): VideoGameDetailResponse{
+        return repository.getDetailVideoGameFromDB(idVideoGame)
     }
+
 }

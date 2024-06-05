@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="Nombre juego"/>
+                android:text="@string/name_videogame"/>
 
             <TextView
                 android:id="@+id/txt_released_videoGame"

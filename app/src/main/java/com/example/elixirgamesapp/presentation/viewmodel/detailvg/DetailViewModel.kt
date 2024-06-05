@@ -17,12 +17,14 @@ class DetailViewModel(private val useCase: VideoGameUseCase): ViewModel() {
 
     fun getDetailVideoGameById(idVideoGame: Long){
         viewModelScope.launch {
+
             try{
-                val videoGame = useCase.getDetailVideoGameFromDB(idVideoGame)
+                val videoGame = useCase.getDetailVideoGameDB(idVideoGame)
                 _videoGameDetail.value = videoGame
-            }catch (e: Exception){
-                Log.e("MainViewMODEL", "Not network connection")
-                _videoGameDetail.value = useCase.getDetailVideoGameFromDB(idVideoGame)
+
+            } catch (e: Exception){
+                Log.e("Detail Activity", "Not Network Connecction\"")
+                _videoGameDetail.value = useCase.getDetailVideoGameDB(idVideoGame)
             }
 
         }
